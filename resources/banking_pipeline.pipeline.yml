@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    banking_pipeline:
+      name: "[${bundle.target}] Banking Transaction Streaming Pipeline"
+      target: ${var.schema}
+      catalog: ${var.catalog}
+      serverless: true
+      channel: preview
+      libraries:
+        - notebook:
+            path: ../src/pipeline/bronze_ingestion.py
+        - notebook:
+            path: ../src/pipeline/silver_transformation.py
+        - notebook:
+            path: ../src/pipeline/gold_aggregations_and_alerts.py

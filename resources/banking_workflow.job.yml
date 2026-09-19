@@ -1,0 +1,34 @@
+resources:
+  jobs:
+    banking_streaming_job:
+      name: "[${bundle.target}] Banking Streaming End-to-End Workflow"
+      
+      schedule:
+        quartz_cron_expression: "0 0 * * * ?"
+        timezone_id: "UTC"
+        pause_status: UNPAUSED
+
+      tasks:
+        - task_key: preflight_health_check
+          notebook_task:
+            notebook_path: ../src/jobs/preflight_health_check.py
+            base_parameters:
+              kafka_bootstrap_server: ${var.kafka_server}
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+
+        - task_key: run_declarative_pipeline
+          depends_on:
+            - task_key: preflight_health_check
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.banking_pipeline.id}
+
+        - task_key: post_pipeline_validation
+          depends_on:
+            - task_key: run_declarative_pipeline
+          notebook_task:
+            notebook_path: ../src/jobs/post_pipeline_validation.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+

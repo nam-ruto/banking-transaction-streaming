@@ -1,0 +1,37 @@
+bundle:
+  name: banking-transaction-streaming
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: "Target Unity Catalog"
+    default: "workspace"
+  schema:
+    description: "Target Unity Catalog Schema"
+    default: "banking_streaming"
+  kafka_server:
+    description: "AWS EC2 Kafka Bootstrap Server (EXTERNAL listener)"
+    default: "15.135.41.136:9092"
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      profile: dbc-c075f506-38af
+    variables:
+      catalog: "workspace"
+      schema: "banking_streaming"
+      kafka_server: "15.135.41.136:9092"
+
+  prod:
+    mode: production
+    workspace:
+      profile: dbc-c075f506-38af
+    variables:
+      catalog: "workspace"
+      schema: "banking_streaming"
+      kafka_server: "15.135.41.136:9092"
+
