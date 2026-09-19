@@ -1,0 +1,34 @@
+name: "CI - Databricks Bundle Validation"
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    name: "Validate DABs & Lint"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate Bundle Configuration (Dev & Prod)
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: |
+          echo "🔍 Validating Dev Target..."
+          databricks bundle validate -t dev
+
+          echo "🔍 Validating Prod Target..."
+          databricks bundle validate -t prod

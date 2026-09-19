@@ -1,1 +1,28 @@
+# Databricks Asset Bundles local state & cache
+.databricks/
+.bundle/
+
+# Python & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+venv/
+kafka-producer-env/
+
+# Keys & Secrets
+key/
+*.pem
+*.key
+
+# Logs
+*.log
+producer.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Legacy / scratch notebooks
 notebooks/
