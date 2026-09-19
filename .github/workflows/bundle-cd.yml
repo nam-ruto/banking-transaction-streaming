@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Databricks CLI
-        uses: databricks/setup-cli@v0.2
+        uses: databricks/setup-cli@main
 
       - name: Deploy DAB to Production
         env:
